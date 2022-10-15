@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<group android:checkableBehavior="single">
+<item
+    android:id="@+id/houses"
+    android:title="Your houses"
+    android:icon="@drawable/ic_baseline_house_24"></item>
+    <item
+        android:id="@+id/liked_houses"
+        android:title="Stared houses"
+        android:icon="@drawable/ic_baseline_star_24"></item>
+    <item
+        android:id="@+id/bookings"
+        android:title="Your bookings"
+        android:icon="@drawable/ic_baseline_assignment_24"></item>
+    <item
+        android:id="@+id/boiking_history"
+        android:title="Booking history"
+        android:icon="@drawable/ic_baseline_history_24"></item>
+    <item
+        android:id="@+id/account"
+        android:title="Manage account"
+        android:icon="@drawable/ic_baseline_manage_accounts_24"></item>
+    <item
+        android:id="@+id/logutB"
+        android:title="Logout"
+        android:icon="@drawable/ic_baseline_logout_24"></item>
+</group>
+</menu>

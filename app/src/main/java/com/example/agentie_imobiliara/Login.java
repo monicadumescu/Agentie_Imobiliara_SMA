@@ -5,6 +5,7 @@ import static com.example.agentie_imobiliara.model.User.encodePassword;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -43,7 +44,7 @@ public class Login extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
-                                //startActivity(new Intent(MainActivity.this,MainScreen.class));
+                                openMain();
                             }
                             else{
                                 Toast.makeText(getApplicationContext(),""+ task.getException(), Toast.LENGTH_SHORT).show();
@@ -54,5 +55,8 @@ public class Login extends AppCompatActivity {
             }
         });
 
+    }
+    public  void openMain() {
+        startActivity(new Intent(this, MainPage.class));
     }
 }
