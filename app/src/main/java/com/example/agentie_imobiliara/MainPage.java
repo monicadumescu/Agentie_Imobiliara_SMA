@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toolbar;
@@ -27,6 +28,8 @@ public class MainPage extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
+    Toolbar toolbar;
+    ImageButton button;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -45,14 +48,21 @@ public class MainPage extends AppCompatActivity {
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
-        drawerLayout.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar = (Toolbar) findViewById(R.id.toolbar3);
+        button = (ImageButton) findViewById(R.id.imageButton2);
 
         View headerView = navigationView.getHeaderView(0);
         TextView user_text = (TextView) headerView.findViewById(R.id.user_text);
         user_text.setText(authAction.getCurrentUser().getEmail().toString());
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigationView.getMenu();
+                navigationView.showContextMenu();
+            }
+        });
+
         navigationView.getMenu();
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
