@@ -27,6 +27,7 @@ public class Login extends AppCompatActivity {
         EditText emailAddress = (EditText) findViewById(R.id.editTextTextEmailAddress2);
         EditText password = (EditText) findViewById(R.id.editTextNumberPassword2);
         Button loginButton = (Button) findViewById(R.id.loginButton);
+        Button gotoRegister = (Button) findViewById(R.id.buttonback);
         FirebaseAuth authAction=FirebaseAuth.getInstance();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -55,9 +56,20 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        gotoRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openRegister();
+            }
+        });
+
     }
 
     public  void openMainPage() {
         startActivity(new Intent(this, MainPage.class));
+    }
+
+    public  void openRegister() {
+        startActivity(new Intent(this, Register.class));
     }
 }

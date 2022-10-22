@@ -34,6 +34,7 @@ public class Register extends AppCompatActivity {
         EditText password = (EditText) findViewById(R.id.editTextNumberPassword);
         EditText repeatpassword = (EditText) findViewById(R.id.editTextTextPasswordRepeat);
         Button addUserB = (Button) findViewById(R.id.addUserB);
+            Button gotoLogin = (Button) findViewById(R.id.buttonlog);
         FirebaseAuth authAction = FirebaseAuth.getInstance();
 
         addUserB.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +60,13 @@ public class Register extends AppCompatActivity {
                         }
                     });
                 }
+            }
+        });
+
+        gotoLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openLogin();
             }
         });
     }
