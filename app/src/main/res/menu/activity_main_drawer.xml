@@ -5,7 +5,7 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/houses"
+            android:id="@+id/nav_home"
             android:title="Your houses"
             android:icon="@drawable/ic_baseline_house_24"></item>
         <item
@@ -25,7 +25,7 @@
             android:title="Manage account"
             android:icon="@drawable/ic_baseline_manage_accounts_24"></item>
         <item
-            android:id="@+id/logutB"
+            android:id="@+id/nav_logout"
             android:title="Logout"
             android:icon="@drawable/ic_baseline_logout_24"></item>
     </group>
