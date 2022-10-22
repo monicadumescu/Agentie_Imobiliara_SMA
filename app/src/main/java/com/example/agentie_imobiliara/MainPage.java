@@ -37,6 +37,7 @@ public class MainPage extends AppCompatActivity {
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
+
         binding = ActivityMainPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -51,27 +52,11 @@ public class MainPage extends AppCompatActivity {
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
 
-//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                Fragment selectedFragment = null;
-//                switch (item.getItemId())
-//                {
-//                    case R.id.nav_home:
-//                        selectedFragment = new HomeFragment();
-//                        break;
-//                    case R.id.nav_logout:
-//                        selectedFragment = new LogoutFragment();
-//                        break;
-//                }
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
-//                return true;
-//            }
-//        });
+//
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_logout)
+                R.id.nav_home, R.id.liked_houses, R.id.bookings, R.id.boiking_history, R.id.account, R.id.nav_logout)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_page);
