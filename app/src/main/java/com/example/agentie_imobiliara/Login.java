@@ -1,8 +1,20 @@
 package com.example.agentie_imobiliara;
 
+import static com.example.agentie_imobiliara.model.User.encodePassword;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Login extends AppCompatActivity {
 
@@ -10,5 +22,37 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        EditText emailAddress = (EditText) findViewById(R.id.editTextTextEmailAddress2);
+        EditText password = (EditText) findViewById(R.id.editTextNumberPassword2);
+        Button loginButton = (Button) findViewById(R.id.loginButton);
+        FirebaseAuth authAction=FirebaseAuth.getInstance();
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = emailAddress.getText().toString();
+                String pass = password.getText().toString();
+                if(emailAddress.getText().toString().equals("") || password.getText().toString().equals(""))
+                {
+                    Toast.makeText(getApplicationContext(), "Please complete all fields!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    authAction.signInWithEmailAndPassword(email, encodePassword(email, pass)).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                //startActivity(new Intent(MainActivity.this,MainScreen.class));
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(),""+ task.getException(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
     }
 }
