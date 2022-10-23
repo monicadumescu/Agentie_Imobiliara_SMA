@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/nav_yourHouses"
+        android:name="com.example.agentie_imobiliara.ui.yourHouses.YourHousesFragment"
+        android:label="@string/menu_yourHouses"
+        tools:layout="@layout/fragment_your_houses" />
+
+    <fragment
         android:id="@+id/liked_houses"
         android:name="com.example.agentie_imobiliara.ui.likedHouses.LikedHousesFragment"
         android:label="@string/menu_lhouses"
