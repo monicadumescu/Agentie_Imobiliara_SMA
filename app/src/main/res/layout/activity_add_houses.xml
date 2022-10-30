@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".AddHousesActivity">
 
     <TextView
         android:id="@+id/textView9"
@@ -176,12 +177,12 @@
         android:id="@+id/addHouseBH"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="144dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="15dp"
         android:backgroundTint="@color/material_dynamic_primary70"
         android:text="Add house"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addPicturesBH" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageViewH"
@@ -214,5 +215,6 @@
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/specialH" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
