@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.storage.StorageManager;
@@ -31,6 +32,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 public class AddHousesActivity extends AppCompatActivity {
 
@@ -96,32 +99,40 @@ public class AddHousesActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    StorageReference fileRefrence = imagesRef.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
-                    fileRefrence.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    StorageReference fileRefrence = imagesRef.child("image" + System.currentTimeMillis() + ".jpg");
+                    StorageReference pictureRef = imagesRef.child("images/" + "image" + System.currentTimeMillis());
 
-                            Toast.makeText(getApplicationContext(),"House was added successfully", Toast.LENGTH_SHORT).show();
-                            House house = new House(address.getText().toString(), size.getText().toString(), rooms.getText().toString(), baths.getText().toString(), floors.getText().toString(), special.getText().toString(), authAction.getCurrentUser().getEmail().toString(),fileName.toString().trim() ,taskSnapshot.getStorage().getDownloadUrl().toString(), price.getText().toString());
-                            daoHouses.addHouse(house);
+                    fileRefrence.getName().equals(pictureRef.getName());
+                    fileRefrence.getPath().equals(pictureRef.getPath());
+
+                    housePicture.setDrawingCacheEnabled(true);
+                    housePicture.buildDrawingCache();
+                    Bitmap bitmap = ((BitmapDrawable) housePicture.getDrawable()).getBitmap();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100 , baos);
+
+                    byte [] data = baos.toByteArray();
+
+                    UploadTask uploadTask = fileRefrence.putBytes(data);
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(),"Upss...Something went wrong", Toast.LENGTH_SHORT).show();
                         }
                     })
-                            .addOnFailureListener(new OnFailureListener() {
+                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    House house = new House(address.getText().toString(), size.getText().toString(),rooms.getText().toString(), baths.getText().toString(),floors.getText().toString(), special.getText().toString(),authAction.getCurrentUser().getEmail().toString(), pictureRef.toString().trim(), uploadTask.getSnapshot().getStorage().getDownloadUrl().toString(), price.getText().toString());
+                                    daoHouses.addHouse(house);
+                                    Toast.makeText(getApplicationContext(),"House was added successfully", Toast.LENGTH_SHORT).show();
+                                    finish();
                                 }
                             });
-
                 }
             }
         });
     }
 
-    private String getFileExtension(Uri uri)
-    {
-        ContentResolver cR = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return  mime.getExtensionFromMimeType(cR.getType(uri));
-    }
 }
