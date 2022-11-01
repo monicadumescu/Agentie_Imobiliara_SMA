@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp">
@@ -13,9 +15,9 @@
             android:id="@+id/address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="Address: "
             android:layout_margin="8dp"
+            android:text="Address: "
+            android:textColor="@color/black"
             android:textSize="20sp"></TextView>
 
         <TextView
@@ -67,25 +69,25 @@
             android:id="@+id/owner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="Owner email address: "
             android:layout_margin="8dp"
+            android:text="Owner email address: "
+            android:textColor="@color/black"
             android:textSize="20sp"></TextView>
 
         <TextView
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="Price: "
             android:layout_margin="8dp"
+            android:text="Price: "
+            android:textColor="@color/black"
             android:textSize="20sp"></TextView>
-        
+
         <ImageView
             android:id="@+id/picture"
             android:layout_width="match_parent"
-            android:layout_margin="8dp"
-            android:layout_height="300dp"/>
+            android:layout_height="270dp"
+            android:layout_margin="8dp" />
 
     </LinearLayout>
 
