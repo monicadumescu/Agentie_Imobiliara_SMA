@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Address: "
+            android:layout_margin="8dp"
+            android:textSize="20sp"></TextView>
+
+        <TextView
+            android:id="@+id/size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Size: "
+            android:layout_margin="8dp"
+            android:textSize="20sp"></TextView>
+
+        <TextView
+            android:id="@+id/rooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Number of rooms: "
+            android:layout_margin="8dp"
+            android:textSize="20sp"></TextView>
+
+        <TextView
+            android:id="@+id/baths"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+                android:text="Number of baths: "
+            android:layout_margin="8dp"
+            android:textSize="20sp"></TextView>
+
+        <TextView
+            android:id="@+id/floors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Number of floors: "
+            android:layout_margin="8dp"
+            android:textSize="20sp"></TextView>
+
+        <TextView
+            android:id="@+id/special"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Special features: "
+            android:layout_margin="8dp"
+            android:textSize="20sp"></TextView>
+
+        <TextView
+            android:id="@+id/owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Owner email address: "
+            android:layout_margin="8dp"
+            android:textSize="20sp"></TextView>
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Price: "
+            android:layout_margin="8dp"
+            android:textSize="20sp"></TextView>
+        
+        <ImageView
+            android:id="@+id/picture"
+            android:layout_width="match_parent"
+            android:layout_margin="8dp"
+            android:layout_height="300dp"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
