@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
@@ -24,45 +24,45 @@
             android:id="@+id/size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="Size: "
             android:layout_margin="8dp"
+            android:text="Size: "
+            android:textColor="@color/black"
             android:textSize="20sp"></TextView>
 
         <TextView
             android:id="@+id/rooms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="Number of rooms: "
             android:layout_margin="8dp"
+            android:text="Number of rooms: "
+            android:textColor="@color/black"
             android:textSize="20sp"></TextView>
 
         <TextView
             android:id="@+id/baths"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-                android:text="Number of baths: "
             android:layout_margin="8dp"
+            android:text="Number of baths: "
+            android:textColor="@color/black"
             android:textSize="20sp"></TextView>
 
         <TextView
             android:id="@+id/floors"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="Number of floors: "
             android:layout_margin="8dp"
+            android:text="Number of floors: "
+            android:textColor="@color/black"
             android:textSize="20sp"></TextView>
 
         <TextView
             android:id="@+id/special"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="Special features: "
             android:layout_margin="8dp"
+            android:text="Special features: "
+            android:textColor="@color/black"
             android:textSize="20sp"></TextView>
 
         <TextView
@@ -88,6 +88,50 @@
             android:layout_width="match_parent"
             android:layout_height="270dp"
             android:layout_margin="8dp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="72dp">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="11dp"
+                android:icon="@drawable/ic_baseline_search_24"
+                app:backgroundTint="@color/material_dynamic_primary70"
+                app:layout_constraintEnd_toStartOf="@+id/save"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="11dp"
+                android:icon="@drawable/ic_baseline_star_24"
+                app:backgroundTint="@color/material_dynamic_primary70"
+                app:layout_constraintEnd_toStartOf="@+id/book_visit"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/book_visit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:icon="@drawable/ic_baseline_assignment_24"
+                app:backgroundTint="@color/material_dynamic_primary70"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
     </LinearLayout>
 
