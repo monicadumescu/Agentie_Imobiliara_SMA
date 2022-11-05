@@ -1,19 +1,7 @@
-package com.example.agentie_imobiliara.ui.yourHouses;
+package com.example.agentie_imobiliara.ui.home_page;
 
-import static android.app.Activity.RESULT_OK;
-
-import android.app.Dialog;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,22 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.agentie_imobiliara.AddHousesActivity;
-import com.example.agentie_imobiliara.DAO.DAOHouses;
-import com.example.agentie_imobiliara.MainPage;
 import com.example.agentie_imobiliara.R;
 import com.example.agentie_imobiliara.adaptors.HousesAdaptor;
-import com.example.agentie_imobiliara.adaptors.YourHousesAdaptor;
 import com.example.agentie_imobiliara.model.House;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,26 +25,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class YourHousesFragment extends Fragment {
+public class HomePageFragment extends Fragment {
 
     private RecyclerView housesRecycleView;
-    private YourHousesAdaptor yourHousesAdaptor;
+    private HousesAdaptor housesAdaptor;
 
     private DatabaseReference databaseReference;
     private List<House> mHouses;
 
-    public YourHousesFragment() {
+    public HomePageFragment() {
         // Required empty public constructor
     }
 
-
-    public static YourHousesFragment newInstance(String param1, String param2) {
-        YourHousesFragment fragment = new YourHousesFragment();
+    public static HomePageFragment newInstance(String param1, String param2) {
+        HomePageFragment fragment = new HomePageFragment();
         Bundle args = new Bundle();
 
         return fragment;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,21 +54,9 @@ public class YourHousesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_your_houses, container, false);
+        View view = inflater.inflate(R.layout.fragment_home_page, container, false);
 
-        Button addHouseButton = (Button) view.findViewById(R.id.addHouses);
-
-
-        addHouseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openAddHouses();
-            }
-        });
-
-        FirebaseAuth authAction=FirebaseAuth.getInstance();
-
-        housesRecycleView = view.findViewById(R.id.recycler_view_yourHouses);
+        housesRecycleView = view.findViewById(R.id.recycler_view);
         housesRecycleView.setHasFixedSize(true);
         housesRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -107,13 +70,11 @@ public class YourHousesFragment extends Fragment {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren())
                 {
                     House house = dataSnapshot.getValue(House.class);
-                    if(house.getOwner().equals(authAction.getCurrentUser().getEmail())) {
-                        mHouses.add(house);
-                    }
+                    mHouses.add(house);
                 }
 
-                yourHousesAdaptor = new YourHousesAdaptor(getContext(), mHouses);
-                housesRecycleView.setAdapter(yourHousesAdaptor);
+                housesAdaptor = new HousesAdaptor(getContext(), mHouses);
+                housesRecycleView.setAdapter(housesAdaptor);
             }
 
             @Override
@@ -123,8 +84,5 @@ public class YourHousesFragment extends Fragment {
         });
 
         return  view;
-    }
-    public void openAddHouses() {
-        startActivity(new Intent(getContext(), AddHousesActivity.class));
     }
 }

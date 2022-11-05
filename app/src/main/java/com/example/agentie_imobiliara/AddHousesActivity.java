@@ -124,7 +124,7 @@ public class AddHousesActivity extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    House house = new House(address.getText().toString(), size.getText().toString(),rooms.getText().toString(), baths.getText().toString(),floors.getText().toString(), special.getText().toString(),authAction.getCurrentUser().getEmail().toString(), pictureRef.toString().trim(), uploadTask.getSnapshot().getStorage().getDownloadUrl().toString(), price.getText().toString());
+                                    House house = new House(address.getText().toString(), size.getText().toString(),rooms.getText().toString(), baths.getText().toString(),floors.getText().toString(), special.getText().toString(),authAction.getCurrentUser().getEmail().toString(), pictureRef.toString(), uploadTask.getSnapshot().getStorage().getDownloadUrl().toString(), price.getText().toString());
                                     daoHouses.addHouse(house);
                                     Toast.makeText(getApplicationContext(),"House was added successfully", Toast.LENGTH_SHORT).show();
                                     finish();

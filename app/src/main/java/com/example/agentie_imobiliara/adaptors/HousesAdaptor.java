@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.agentie_imobiliara.R;
 import com.example.agentie_imobiliara.model.House;
-import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,14 +36,15 @@ public class HousesAdaptor extends RecyclerView.Adapter<HousesAdaptor.ImageViewH
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         House currentUpload = mUploads.get(position);
-        holder.address.setText(currentUpload.getAddress());
-        holder.size.setText(currentUpload.getSize());
-        holder.rooms.setText(currentUpload.getRooms());
-        holder.baths.setText(currentUpload.getBaths());
-        holder.floors.setText(currentUpload.getFloors());
-        holder.special.setText(currentUpload.getSpecial());
-        holder.owner.setText(currentUpload.getOwner());
-        holder.price.setText(currentUpload.getPrice());
+        holder.address.setText("Address" + currentUpload.getAddress());
+        holder.size.setText("Size: " + currentUpload.getSize() + " sq");
+        holder.rooms.setText("Number of rooms: " + currentUpload.getRooms());
+        holder.baths.setText("Number of baths: " + currentUpload.getBaths());
+        holder.floors.setText("Number of floors: " + currentUpload.getFloors());
+        holder.special.setText("Special features: " + currentUpload.getSpecial());
+        holder.owner.setText("Owner: " + currentUpload.getOwner());
+        holder.price.setText("Price: " + currentUpload.getPrice());
+        Picasso.get().load(currentUpload.getPictureName()).fit().centerCrop().into(holder.imageView);
     }
 
     @Override

@@ -17,6 +17,10 @@ public class House {
     private String Image;
     private String Price;
 
+    public House()
+    {
+
+    }
 
     public House(String address, String size, String rooms, String baths, String floors, String special, String owner,String pictureName, String image, String price) {
         Address = address;

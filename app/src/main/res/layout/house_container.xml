@@ -85,8 +85,8 @@
 
         <ImageView
             android:id="@+id/picture"
-            android:layout_width="match_parent"
-            android:layout_height="270dp"
+            android:layout_width="363dp"
+            android:layout_height="242dp"
             android:layout_margin="8dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -94,40 +94,39 @@
             android:layout_height="72dp">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/search"
+                android:id="@+id/edit_house"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="11dp"
-                android:icon="@drawable/ic_baseline_search_24"
+                android:clickable="true"
                 app:backgroundTint="@color/material_dynamic_primary70"
-                app:layout_constraintEnd_toStartOf="@+id/save"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+                app:srcCompat="@drawable/ic_baseline_search_24" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/save"
+                android:id="@+id/delete_house"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_marginStart="7dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="11dp"
-                android:icon="@drawable/ic_baseline_star_24"
+                android:clickable="true"
                 app:backgroundTint="@color/material_dynamic_primary70"
-                app:layout_constraintEnd_toStartOf="@+id/book_visit"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/edit_house"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_star_24" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/book_visit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:icon="@drawable/ic_baseline_assignment_24"
+                android:clickable="true"
                 app:backgroundTint="@color/material_dynamic_primary70"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/delete_house"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_assignment_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
