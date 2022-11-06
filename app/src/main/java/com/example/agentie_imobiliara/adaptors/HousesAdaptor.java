@@ -1,7 +1,9 @@
 package com.example.agentie_imobiliara.adaptors;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +14,14 @@ import android.widget.TextView;
 import com.example.agentie_imobiliara.AddHousesActivity;
 import com.example.agentie_imobiliara.R;
 import com.example.agentie_imobiliara.model.House;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class HousesAdaptor extends RecyclerView.Adapter<HousesAdaptor.ImageViewHolder> {
 
@@ -40,7 +44,7 @@ public class HousesAdaptor extends RecyclerView.Adapter<HousesAdaptor.ImageViewH
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         House currentUpload = mUploads.get(position);
-        holder.address.setText("Address" + currentUpload.getAddress());
+        holder.address.setText("Address: " + currentUpload.getAddress());
         holder.size.setText("Size: " + currentUpload.getSize() + " sq");
         holder.rooms.setText("Number of rooms: " + currentUpload.getRooms());
         holder.baths.setText("Number of baths: " + currentUpload.getBaths());
@@ -49,6 +53,30 @@ public class HousesAdaptor extends RecyclerView.Adapter<HousesAdaptor.ImageViewH
         holder.owner.setText("Owner: " + currentUpload.getOwner());
         holder.price.setText("Price: " + currentUpload.getPrice());
         Picasso.get().load(currentUpload.getPictureName()).fit().centerCrop().into(holder.imageView);
+
+        holder.search_address_b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String address = holder.address.getText().toString();
+                Intent searchIntent = new Intent(Intent.ACTION_WEB_SEARCH);
+                searchIntent.putExtra(SearchManager.QUERY, address);
+                mContext.startActivity(searchIntent);
+            }
+        });
+
+        holder.save_house_b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        holder.book_visit_b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     @Override
@@ -60,6 +88,7 @@ public class HousesAdaptor extends RecyclerView.Adapter<HousesAdaptor.ImageViewH
 
         public TextView address, size, rooms, baths, floors, special, owner, price;
         public ImageView imageView;
+        FloatingActionButton search_address_b, save_house_b, book_visit_b;
 
         public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,7 +101,9 @@ public class HousesAdaptor extends RecyclerView.Adapter<HousesAdaptor.ImageViewH
             owner = itemView.findViewById(R.id.owner);
             price = itemView.findViewById(R.id.price);
             imageView = itemView.findViewById(R.id.picture);
-
+            search_address_b = itemView.findViewById(R.id.edit_house);
+            save_house_b = itemView.findViewById(R.id.delete_house);
+            book_visit_b = itemView.findViewById(R.id.book_visit);
         }
 
     }
