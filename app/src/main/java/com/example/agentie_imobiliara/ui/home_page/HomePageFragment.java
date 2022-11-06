@@ -77,6 +77,7 @@ public class HomePageFragment extends Fragment {
                 housesRecycleView.setAdapter(housesAdaptor);
             }
 
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();

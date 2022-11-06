@@ -20,9 +20,9 @@ public class DAOHouses {
         return databaseReference.push().setValue(house);
     }
 
-    public Task<Void> editHouse(String key, HashMap<String, Object> hashMap)
+    public Task<Void> editHouse(String key, House house)
     {
-       return databaseReference.child(key).updateChildren(hashMap);
+       return databaseReference.child(key).setValue(house);
     }
 
     public Task<Void> deleteHouse(String key)

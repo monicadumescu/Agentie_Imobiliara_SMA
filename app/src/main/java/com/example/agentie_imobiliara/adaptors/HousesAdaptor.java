@@ -1,11 +1,15 @@
 package com.example.agentie_imobiliara.adaptors;
 
 import android.content.Context;
+import android.content.Intent;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.agentie_imobiliara.AddHousesActivity;
 import com.example.agentie_imobiliara.R;
 import com.example.agentie_imobiliara.model.House;
 import com.squareup.picasso.Picasso;
@@ -68,6 +72,9 @@ public class HousesAdaptor extends RecyclerView.Adapter<HousesAdaptor.ImageViewH
             owner = itemView.findViewById(R.id.owner);
             price = itemView.findViewById(R.id.price);
             imageView = itemView.findViewById(R.id.picture);
+
         }
+
     }
+
 }

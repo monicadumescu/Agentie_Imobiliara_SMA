@@ -8,7 +8,7 @@
         android:smallScreens="true"
         android:xlargeScreens="true" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -20,6 +20,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Agentie_Imobiliara"
         tools:targetApi="31">
+        <activity
+            android:name=".EditHouseActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".AddHousesActivity"
             android:exported="false">
@@ -64,6 +71,5 @@
                 android:value="" />
         </activity>
     </application>
-
 
 </manifest>

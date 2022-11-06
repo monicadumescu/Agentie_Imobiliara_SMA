@@ -48,7 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class YourHousesFragment extends Fragment {
+public class YourHousesFragment extends Fragment{
 
     private RecyclerView housesRecycleView;
     private YourHousesAdaptor yourHousesAdaptor;
@@ -108,13 +108,18 @@ public class YourHousesFragment extends Fragment {
                 {
                     House house = dataSnapshot.getValue(House.class);
                     if(house.getOwner().equals(authAction.getCurrentUser().getEmail())) {
+                        house.setKey(dataSnapshot.getKey());
                         mHouses.add(house);
+
                     }
                 }
 
                 yourHousesAdaptor = new YourHousesAdaptor(getContext(), mHouses);
                 housesRecycleView.setAdapter(yourHousesAdaptor);
+
+
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -127,4 +132,5 @@ public class YourHousesFragment extends Fragment {
     public void openAddHouses() {
         startActivity(new Intent(getContext(), AddHousesActivity.class));
     }
+
 }
