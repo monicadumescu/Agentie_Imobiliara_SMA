@@ -16,6 +16,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,15 +31,30 @@ import com.example.agentie_imobiliara.AddHousesActivity;
 import com.example.agentie_imobiliara.DAO.DAOHouses;
 import com.example.agentie_imobiliara.MainPage;
 import com.example.agentie_imobiliara.R;
+import com.example.agentie_imobiliara.adaptors.HousesAdaptor;
+import com.example.agentie_imobiliara.adaptors.YourHousesAdaptor;
 import com.example.agentie_imobiliara.model.House;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class YourHousesFragment extends Fragment {
+public class YourHousesFragment extends Fragment{
 
+    private RecyclerView housesRecycleView;
+    private YourHousesAdaptor yourHousesAdaptor;
+
+    private DatabaseReference databaseReference;
+    private List<House> mHouses;
 
     public YourHousesFragment() {
         // Required empty public constructor
@@ -74,9 +91,46 @@ public class YourHousesFragment extends Fragment {
             }
         });
 
+        FirebaseAuth authAction=FirebaseAuth.getInstance();
+
+        housesRecycleView = view.findViewById(R.id.recycler_view_yourHouses);
+        housesRecycleView.setHasFixedSize(true);
+        housesRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        mHouses = new ArrayList<>();
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("House");
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    House house = dataSnapshot.getValue(House.class);
+                    if(house.getOwner().equals(authAction.getCurrentUser().getEmail())) {
+                        house.setKey(dataSnapshot.getKey());
+                        mHouses.add(house);
+
+                    }
+                }
+
+                yourHousesAdaptor = new YourHousesAdaptor(getContext(), mHouses);
+                housesRecycleView.setAdapter(yourHousesAdaptor);
+
+
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return  view;
     }
     public void openAddHouses() {
         startActivity(new Intent(getContext(), AddHousesActivity.class));
     }
+
 }

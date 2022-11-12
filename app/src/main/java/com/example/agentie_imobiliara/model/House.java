@@ -16,7 +16,12 @@ public class House {
     private String PictureName;
     private String Image;
     private String Price;
+    private String key;
 
+    public House()
+    {
+
+    }
 
     public House(String address, String size, String rooms, String baths, String floors, String special, String owner,String pictureName, String image, String price) {
         Address = address;
@@ -109,6 +114,14 @@ public class House {
 
     public void setPictureName(String pictureName) {
         PictureName = pictureName;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     @Override

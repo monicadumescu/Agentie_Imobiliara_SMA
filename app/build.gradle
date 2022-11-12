@@ -57,4 +57,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-database'
 
     implementation platform('com.google.firebase:firebase-bom:29.0.1')
+    implementation 'com.squareup.picasso:picasso:2.8'
 }
