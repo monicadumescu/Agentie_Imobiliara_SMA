@@ -3,8 +3,6 @@ package com.example.agentie_imobiliara.adaptors;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.agentie_imobiliara.AddHousesActivity;
-import com.example.agentie_imobiliara.DAO.DAOHouses;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.agentie_imobiliara.DAO.DAOSavedHouses;
 import com.example.agentie_imobiliara.R;
 import com.example.agentie_imobiliara.model.House;
@@ -30,14 +29,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
-import java.util.Scanner;
 
-public class HousesAdaptor extends RecyclerView.Adapter<HousesAdaptor.ImageViewHolder> {
-
+public class LikedHousesAdaptor extends RecyclerView.Adapter<LikedHousesAdaptor.ImageViewHolder>{
     private Context mContext;
     private List<House> mUploads;
     private DatabaseReference databaseReference;
@@ -45,7 +39,7 @@ public class HousesAdaptor extends RecyclerView.Adapter<HousesAdaptor.ImageViewH
     boolean liked = false;
     String liked_key;
 
-    public  HousesAdaptor(Context context, List<House> uploads)
+    public LikedHousesAdaptor(Context context, List<House> uploads)
     {
         mContext = context;
         mUploads = uploads;
@@ -54,12 +48,12 @@ public class HousesAdaptor extends RecyclerView.Adapter<HousesAdaptor.ImageViewH
     @NonNull
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-       View view = LayoutInflater.from(mContext).inflate(R.layout.house_container, parent, false);
-        return new ImageViewHolder(view);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.liked_houses_container, parent, false);
+        return new LikedHousesAdaptor.ImageViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull LikedHousesAdaptor.ImageViewHolder holder, int position) {
         House currentUpload = mUploads.get(position);
         holder.address.setText("Address: " + currentUpload.getAddress());
         holder.size.setText("Size: " + currentUpload.getSize() + " sq");
@@ -96,11 +90,11 @@ public class HousesAdaptor extends RecyclerView.Adapter<HousesAdaptor.ImageViewH
                         for(DataSnapshot dataSnapshot : snapshot.getChildren())
                         {
                             SavedHouses savedHouses1 = dataSnapshot.getValue(SavedHouses.class);
-                           if(savedHouses1.getKey().equals(currentUpload.getKey()) && savedHouses1.getEmail().equals(authAction.getCurrentUser().getEmail()))
-                           {
-                               liked = true;
-                               liked_key = dataSnapshot.getKey();
-                           }
+                            if(savedHouses1.getKey().equals(currentUpload.getKey()) && savedHouses1.getEmail().equals(authAction.getCurrentUser().getEmail()))
+                            {
+                                liked = true;
+                                liked_key = dataSnapshot.getKey();
+                            }
                         }
                     }
 
@@ -201,5 +195,4 @@ public class HousesAdaptor extends RecyclerView.Adapter<HousesAdaptor.ImageViewH
         }
 
     }
-
 }

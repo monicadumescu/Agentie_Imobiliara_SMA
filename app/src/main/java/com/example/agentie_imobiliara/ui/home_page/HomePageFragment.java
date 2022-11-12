@@ -70,6 +70,7 @@ public class HomePageFragment extends Fragment {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren())
                 {
                     House house = dataSnapshot.getValue(House.class);
+                    house.setKey(dataSnapshot.getKey());
                     mHouses.add(house);
                 }
 
