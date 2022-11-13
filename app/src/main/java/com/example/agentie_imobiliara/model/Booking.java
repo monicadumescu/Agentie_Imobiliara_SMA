@@ -3,78 +3,49 @@ package com.example.agentie_imobiliara.model;
 import java.util.Objects;
 
 public class Booking {
-    private String address;
-    private String day;
-    private String month;
-    private String year;
-    private String hour;
-    private String agent_book;
-    private String special_req;
-    private String accept_booking;
-    private String rejection_message;
+    private String house_key;
     private String user;
+    private long date;
+    private String hour;
+    private boolean accept_booking;
+    private String rejection_message;
+    private String object_key;
 
-    public String getAddress() {
-        return address;
+    public Booking()
+    {
+
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getDay() {
-        return day;
-    }
-
-    public void setDay(String day) {
-        this.day = day;
-    }
-
-    public String getMonth() {
-        return month;
-    }
-
-    public void setMonth(String month) {
-        this.month = month;
-    }
-
-    public String getYear() {
-        return year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
-    }
-
-    public String getHour() {
-        return hour;
-    }
-
-    public void setHour(String hour) {
+    public Booking(String house_key, String user, long date, String hour, boolean accept_booking, String rejection_message) {
+        this.house_key = house_key;
+        this.user = user;
+        this.date = date;
         this.hour = hour;
+        this.accept_booking = accept_booking;
+        this.rejection_message = rejection_message;
     }
 
-    public String getAgent_book() {
-        return agent_book;
+    public String getHouse_key() {
+        return house_key;
     }
 
-    public void setAgent_book(String agent_book) {
-        this.agent_book = agent_book;
+    public void setHouse_key(String house_key) {
+        this.house_key = house_key;
     }
 
-    public String getSpecial_req() {
-        return special_req;
+    public String getUser() {
+        return user;
     }
 
-    public void setSpecial_req(String special_req) {
-        this.special_req = special_req;
+    public void setUser(String user) {
+        this.user = user;
     }
 
-    public String getAccept_booking() {
+    public boolean isAccept_booking() {
         return accept_booking;
     }
 
-    public void setAccept_booking(String accept_booking) {
+    public void setAccept_booking(boolean accept_booking) {
         this.accept_booking = accept_booking;
     }
 
@@ -86,12 +57,28 @@ public class Booking {
         this.rejection_message = rejection_message;
     }
 
-    public String getUser() {
-        return user;
+    public String getObject_key() {
+        return object_key;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setObject_key(String object_key) {
+        this.object_key = object_key;
+    }
+
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+    public String getHour() {
+        return hour;
+    }
+
+    public void setHour(String hour) {
+        this.hour = hour;
     }
 
     @Override
@@ -99,27 +86,24 @@ public class Booking {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return address.equals(booking.address) && day.equals(booking.day) && month.equals(booking.month) && year.equals(booking.year) && hour.equals(booking.hour) && agent_book.equals(booking.agent_book) && special_req.equals(booking.special_req) && accept_booking.equals(booking.accept_booking) && rejection_message.equals(booking.rejection_message) && user.equals(booking.user);
+        return date == booking.date && accept_booking == booking.accept_booking && house_key.equals(booking.house_key) && user.equals(booking.user) && hour.equals(booking.hour) && rejection_message.equals(booking.rejection_message) && object_key.equals(booking.object_key);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(address, day, month, year, hour, agent_book, special_req, accept_booking, rejection_message, user);
+        return Objects.hash(house_key, user, date, hour, accept_booking, rejection_message, object_key);
     }
 
     @Override
     public String toString() {
         return "Booking{" +
-                "address='" + address + '\'' +
-                ", day='" + day + '\'' +
-                ", month='" + month + '\'' +
-                ", year='" + year + '\'' +
-                ", hour='" + hour + '\'' +
-                ", agent_book='" + agent_book + '\'' +
-                ", special_req='" + special_req + '\'' +
-                ", accept_booking='" + accept_booking + '\'' +
-                ", rejection_message='" + rejection_message + '\'' +
+                "house_key='" + house_key + '\'' +
                 ", user='" + user + '\'' +
+                ", date=" + date +
+                ", hour='" + hour + '\'' +
+                ", accept_booking=" + accept_booking +
+                ", rejection_message='" + rejection_message + '\'' +
+                ", object_key='" + object_key + '\'' +
                 '}';
     }
 }
