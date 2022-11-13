@@ -17,6 +17,7 @@ import com.example.agentie_imobiliara.DAO.DAOBooking;
 import com.example.agentie_imobiliara.DAO.DAOHouses;
 import com.example.agentie_imobiliara.adaptors.YourHousesAdaptor;
 import com.example.agentie_imobiliara.model.Booking;
+import com.example.agentie_imobiliara.model.Date;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -25,7 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class Book_Visit_Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private String hour;
-    private long date;
+    private Date date_from_calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +52,18 @@ public class Book_Visit_Activity extends AppCompatActivity implements AdapterVie
         FirebaseApp.initializeApp(getApplicationContext());
         DAOBooking daoBooking = new DAOBooking();
 
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
+                date_from_calendar = new Date(i2, i1+1, i);
+            }
+        });
+
         save_booking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                date = calendarView.getDate();
-                Booking booking = new Booking(house_key, authAction.getCurrentUser().getEmail(),date, hour, false, "");
+                //date = calendarView.getDate();
+                Booking booking = new Booking(house_key, authAction.getCurrentUser().getEmail(),date_from_calendar, hour, false, "");
                 daoBooking.addBooking(booking).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

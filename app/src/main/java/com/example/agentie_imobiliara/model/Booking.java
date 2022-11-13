@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Booking {
     private String house_key;
     private String user;
-    private long date;
+    private Date date;
     private String hour;
     private boolean accept_booking;
     private String rejection_message;
@@ -16,14 +16,15 @@ public class Booking {
 
     }
 
-    public Booking(String house_key, String user, long date, String hour, boolean accept_booking, String rejection_message) {
+    public Booking(String house_key, String user, Date date, String hour, boolean accept_booking, String rejection_message) {
         this.house_key = house_key;
         this.user = user;
-        this.date = date;
+        this.date = new Date(date.getDay(), date.getMonth(), date.getYear());
         this.hour = hour;
         this.accept_booking = accept_booking;
         this.rejection_message = rejection_message;
     }
+
 
     public String getHouse_key() {
         return house_key;
@@ -39,6 +40,22 @@ public class Booking {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getHour() {
+        return hour;
+    }
+
+    public void setHour(String hour) {
+        this.hour = hour;
     }
 
     public boolean isAccept_booking() {
@@ -65,28 +82,12 @@ public class Booking {
         this.object_key = object_key;
     }
 
-    public long getDate() {
-        return date;
-    }
-
-    public void setDate(long date) {
-        this.date = date;
-    }
-
-    public String getHour() {
-        return hour;
-    }
-
-    public void setHour(String hour) {
-        this.hour = hour;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return date == booking.date && accept_booking == booking.accept_booking && house_key.equals(booking.house_key) && user.equals(booking.user) && hour.equals(booking.hour) && rejection_message.equals(booking.rejection_message) && object_key.equals(booking.object_key);
+        return accept_booking == booking.accept_booking && house_key.equals(booking.house_key) && user.equals(booking.user) && date.equals(booking.date) && hour.equals(booking.hour) && rejection_message.equals(booking.rejection_message) && object_key.equals(booking.object_key);
     }
 
     @Override
