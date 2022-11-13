@@ -83,6 +83,7 @@ public class LikedHousesFragment extends Fragment {
                                     House house = dataSnapshot.getValue(House.class);
                                     if(savedHouses.getKey().equals(dataSnapshot.getKey()))
                                     {
+                                        house.setKey(dataSnapshot.getKey());
                                         mHouses.add(house);
                                     }
                                     housesAdaptor = new LikedHousesAdaptor(getContext(), mHouses);
