@@ -4,13 +4,18 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.Toast;
 
 import com.example.agentie_imobiliara.R;
+import com.example.agentie_imobiliara.adaptors.BookingsAdaptor;
+import com.example.agentie_imobiliara.adaptors.HousesAdaptor;
 import com.example.agentie_imobiliara.model.Booking;
 import com.example.agentie_imobiliara.model.Date;
 import com.example.agentie_imobiliara.model.House;
@@ -21,18 +26,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class BookingsFragment extends Fragment {
 
+    private RecyclerView bookingRecyclieView;
+    private BookingsAdaptor bookingsAdaptor;
+
     private DatabaseReference databaseReference, houseDatabaseReference;
+    private List<Booking> mBookings;
+
     FirebaseAuth authAction=FirebaseAuth.getInstance();
-    private List<Booking> bookingsList;
-    private Date date;
-    private String date_string;
+
 
     public BookingsFragment() {
         // Required empty public constructor
@@ -58,7 +68,11 @@ public class BookingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_bookings, container, false);
 
-        CalendarView calendarView = view.findViewById(R.id.calendarView2);
+        bookingRecyclieView = view.findViewById(R.id.recycler_view_bookings);
+        bookingRecyclieView.setHasFixedSize(true);
+        bookingRecyclieView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        mBookings = new ArrayList<>();
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Booking");
         houseDatabaseReference = FirebaseDatabase.getInstance().getReference("House");
@@ -69,31 +83,38 @@ public class BookingsFragment extends Fragment {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren())
                 {
                     Booking booking = dataSnapshot.getValue(Booking.class);
-                    House house = houseDatabaseReference.child(booking.getHouse_key()).get().getResult().getValue(House.class);
-                    if(booking.getUser().equals(authAction.getCurrentUser().getEmail()) || house.getOwner().equals(authAction.getCurrentUser().getEmail())) {
-                        booking.setObject_key(dataSnapshot.getKey());
-                        bookingsList.add(booking);
-                        date = new Date(booking.getDate().getDay(), booking.getDate().getMonth(), booking.getDate().getYear());
-                        if(booking.getUser().equals(authAction.getCurrentUser().getEmail()))
-                        {
-                            date_string = date.getYear() + "-" + date.getMonth() + "-" + date.getDay() + " 00:00:00";
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-                            ParsePosition parsePosition = new ParsePosition(0);
-                            java.util.Date date1 = simpleDateFormat.parse(date_string, parsePosition);
-                            long date_long = date1.getTime();
-                            calendarView.setDate(date_long);
-                            calendarView.setDateTextAppearance(android.R.color.holo_blue_light);
+                    houseDatabaseReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for(DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
+                                House house = dataSnapshot1.getValue(House.class);
+                                if (dataSnapshot1.getKey().equals(booking.getHouse_key())) {
+                                    if (house.getOwner().equals(authAction.getCurrentUser().getEmail())) {
+                                        booking.setObject_key(dataSnapshot.getKey());
+                                        mBookings.add(booking);
+                                    }
+
+                                }
+                            }
+                            bookingsAdaptor = new BookingsAdaptor(getContext(), mBookings);
+                            bookingRecyclieView.setAdapter(bookingsAdaptor);
                         }
-                    }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
+
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
 
         return  view;
     }

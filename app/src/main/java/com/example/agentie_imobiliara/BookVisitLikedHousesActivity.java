@@ -14,9 +14,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.agentie_imobiliara.DAO.DAOBooking;
-import com.example.agentie_imobiliara.DAO.DAOHouses;
 import com.example.agentie_imobiliara.adaptors.HousesAdaptor;
-import com.example.agentie_imobiliara.adaptors.YourHousesAdaptor;
+import com.example.agentie_imobiliara.adaptors.LikedHousesAdaptor;
 import com.example.agentie_imobiliara.model.Booking;
 import com.example.agentie_imobiliara.model.Date;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,7 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Book_Visit_Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class BookVisitLikedHousesActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private String hour;
     private Date date_from_calendar;
@@ -35,8 +34,8 @@ public class Book_Visit_Activity extends AppCompatActivity implements AdapterVie
         setContentView(R.layout.activity_book_visit);
 
         Intent intent = getIntent();
-        String house_key = intent.getStringExtra(HousesAdaptor.EXTRA_TEXT);
-        String house_address = intent.getStringExtra(HousesAdaptor.EXTRA_ADDRESS);
+        String house_key = intent.getStringExtra(LikedHousesAdaptor.EXTRA_TEXT);
+        String house_address = intent.getStringExtra(LikedHousesAdaptor.EXTRA_ADDRESS);
 
         Button save_booking = (Button) findViewById(R.id.save_booking);
         CalendarView calendarView = (CalendarView) findViewById(R.id.date);

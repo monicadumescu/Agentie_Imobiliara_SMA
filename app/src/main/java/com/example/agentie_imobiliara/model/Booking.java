@@ -10,19 +10,21 @@ public class Booking {
     private boolean accept_booking;
     private String rejection_message;
     private String object_key;
+    private String address;
 
     public Booking()
     {
 
     }
 
-    public Booking(String house_key, String user, Date date, String hour, boolean accept_booking, String rejection_message) {
+    public Booking(String house_key, String user, Date date, String hour, boolean accept_booking, String rejection_message, String address) {
         this.house_key = house_key;
         this.user = user;
         this.date = new Date(date.getDay(), date.getMonth(), date.getYear());
         this.hour = hour;
         this.accept_booking = accept_booking;
         this.rejection_message = rejection_message;
+        this.address = address;
     }
 
 
@@ -82,17 +84,25 @@ public class Booking {
         this.object_key = object_key;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return accept_booking == booking.accept_booking && house_key.equals(booking.house_key) && user.equals(booking.user) && date.equals(booking.date) && hour.equals(booking.hour) && rejection_message.equals(booking.rejection_message) && object_key.equals(booking.object_key);
+        return accept_booking == booking.accept_booking && house_key.equals(booking.house_key) && user.equals(booking.user) && date.equals(booking.date) && hour.equals(booking.hour) && rejection_message.equals(booking.rejection_message) && object_key.equals(booking.object_key) && address.equals(booking.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(house_key, user, date, hour, accept_booking, rejection_message, object_key);
+        return Objects.hash(house_key, user, date, hour, accept_booking, rejection_message, object_key, address);
     }
 
     @Override
@@ -105,6 +115,7 @@ public class Booking {
                 ", accept_booking=" + accept_booking +
                 ", rejection_message='" + rejection_message + '\'' +
                 ", object_key='" + object_key + '\'' +
+                ", address='" + address + '\'' +
                 '}';
     }
 }
