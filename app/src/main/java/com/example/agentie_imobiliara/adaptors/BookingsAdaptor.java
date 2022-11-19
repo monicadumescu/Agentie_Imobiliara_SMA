@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.agentie_imobiliara.DAO.DAOBooking;
 import com.example.agentie_imobiliara.R;
 import com.example.agentie_imobiliara.model.Booking;
-import com.example.agentie_imobiliara.model.House;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.List;
 public class BookingsAdaptor extends RecyclerView.Adapter<BookingsAdaptor.ImageViewHolder> {
     private Context mContext;
     private List<Booking> mUploads;
-    private DAOBooking daoHouses = new DAOBooking();
+    private DAOBooking daoBooking = new DAOBooking();
     AlertDialog.Builder alertDialogBuilder;
     AlertDialog.Builder alertDIalogReason;
 
@@ -63,7 +62,7 @@ public class BookingsAdaptor extends RecyclerView.Adapter<BookingsAdaptor.ImageV
                     Toast.makeText(mContext, "This booking was already approved", Toast.LENGTH_SHORT).show();
                 } else {
                     currentUpload.setAccept_booking(true);
-                    daoHouses.editBooking(currentUpload.getObject_key(), currentUpload);
+                    daoBooking.editBooking(currentUpload.getObject_key(), currentUpload);
                     Toast.makeText(mContext, "The booking was approved successfully!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -95,7 +94,7 @@ public class BookingsAdaptor extends RecyclerView.Adapter<BookingsAdaptor.ImageV
                                     if (!disapprove_reason_text.equals("")) {
                                         currentUpload.setAccept_booking(false);
                                         currentUpload.setRejection_message(disapprove_reason_text.getText().toString());
-                                        daoHouses.editBooking(currentUpload.getObject_key(), currentUpload);
+                                        daoBooking.editBooking(currentUpload.getObject_key(), currentUpload);
                                         Toast.makeText(mContext, "The booking was disapproved successfully!", Toast.LENGTH_SHORT).show();
                                         alertDialog.cancel();
                                     }
@@ -129,7 +128,7 @@ public class BookingsAdaptor extends RecyclerView.Adapter<BookingsAdaptor.ImageV
                             if (!disapprove_reason_text.equals("")) {
                                 currentUpload.setAccept_booking(false);
                                 currentUpload.setRejection_message(disapprove_reason_text.getText().toString());
-                                daoHouses.editBooking(currentUpload.getObject_key(), currentUpload);
+                                daoBooking.editBooking(currentUpload.getObject_key(), currentUpload);
                                 Toast.makeText(mContext, "The booking was disapproved successfully!", Toast.LENGTH_SHORT).show();
                                 alertDialog.cancel();
                             }
