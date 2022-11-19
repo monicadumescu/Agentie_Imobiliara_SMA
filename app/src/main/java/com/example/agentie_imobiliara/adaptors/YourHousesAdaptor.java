@@ -119,7 +119,7 @@ public int getItemCount() {
         return mUploads.size();
         }
 
-public class ImageViewHolder extends  RecyclerView.ViewHolder{
+public static class ImageViewHolder extends  RecyclerView.ViewHolder{
 
     public TextView address, size, rooms, baths, floors, special, owner, price;
     public ImageView imageView;

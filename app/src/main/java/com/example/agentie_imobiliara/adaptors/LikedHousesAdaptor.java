@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.agentie_imobiliara.BookVisitLikedHousesActivity;
+import com.example.agentie_imobiliara.Book_Visit_Activity;
 import com.example.agentie_imobiliara.DAO.DAOSavedHouses;
 import com.example.agentie_imobiliara.R;
 import com.example.agentie_imobiliara.model.House;
@@ -38,6 +40,8 @@ public class LikedHousesAdaptor extends RecyclerView.Adapter<LikedHousesAdaptor.
     private DAOSavedHouses daoSavedHouses = new DAOSavedHouses();
     boolean liked = false;
     String liked_key;
+    public static final String EXTRA_TEXT = "com.example.agentie_imobiliara.key";
+    public static final String EXTRA_ADDRESS = "com.example.agentie_impobiliara.address";
 
     public LikedHousesAdaptor(Context context, List<House> uploads)
     {
@@ -162,7 +166,10 @@ public class LikedHousesAdaptor extends RecyclerView.Adapter<LikedHousesAdaptor.
         holder.book_visit_b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent book_visit = new Intent(mContext, BookVisitLikedHousesActivity.class);
+                book_visit.putExtra(EXTRA_TEXT,currentUpload.getKey());
+                book_visit.putExtra(EXTRA_ADDRESS, currentUpload.getAddress());
+                mContext.startActivity(book_visit);
             }
         });
     }

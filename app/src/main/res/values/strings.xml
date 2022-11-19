@@ -15,7 +15,6 @@
     <string name="menu_history">History</string>
     <string name="menu_accounts">Manage Account</string>
     <string name="menu_logout">Logout</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
