@@ -19,6 +19,11 @@ public class DAOBooking {
         return databaseReference.push().setValue(booking);
     }
 
+    public Task<Void> editBooking(String key, Booking booking)
+    {
+        return  databaseReference.child(key).setValue(booking);
+    }
+
     public Task<Void> deleteBooking(String key)
     {
         return databaseReference.child(key).removeValue();
