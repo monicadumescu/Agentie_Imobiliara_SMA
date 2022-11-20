@@ -1,5 +1,6 @@
 package com.example.agentie_imobiliara.adaptors;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -64,6 +65,7 @@ public class BookingsAdaptor extends RecyclerView.Adapter<BookingsAdaptor.ImageV
                     currentUpload.setAccept_booking(true);
                     daoBooking.editBooking(currentUpload.getObject_key(), currentUpload);
                     Toast.makeText(mContext, "The booking was approved successfully!", Toast.LENGTH_SHORT).show();
+                    ((Activity) mContext).recreate();
                 }
             }
         });
@@ -97,6 +99,7 @@ public class BookingsAdaptor extends RecyclerView.Adapter<BookingsAdaptor.ImageV
                                         daoBooking.editBooking(currentUpload.getObject_key(), currentUpload);
                                         Toast.makeText(mContext, "The booking was disapproved successfully!", Toast.LENGTH_SHORT).show();
                                         alertDialog.cancel();
+                                        ((Activity) mContext).recreate();
                                     }
                                 }
                             });
@@ -131,6 +134,7 @@ public class BookingsAdaptor extends RecyclerView.Adapter<BookingsAdaptor.ImageV
                                 daoBooking.editBooking(currentUpload.getObject_key(), currentUpload);
                                 Toast.makeText(mContext, "The booking was disapproved successfully!", Toast.LENGTH_SHORT).show();
                                 alertDialog.cancel();
+                                ((Activity) mContext).recreate();
                             }
                         }
                     });

@@ -1,5 +1,6 @@
 package com.example.agentie_imobiliara.adaptors;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -70,6 +71,7 @@ public class BookingsHistoryAdaptor extends RecyclerView.Adapter<BookingsHistory
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     Toast.makeText(mContext, "Booking was deleted successfully!", Toast.LENGTH_SHORT).show();
+                                    ((Activity) mContext).recreate();
                                 }
                                 else{
                                     Toast.makeText(mContext,""+ task.getException(), Toast.LENGTH_SHORT).show();
