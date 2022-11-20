@@ -1,5 +1,6 @@
 package com.example.agentie_imobiliara.adaptors;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -38,8 +39,7 @@ public class LikedHousesAdaptor extends RecyclerView.Adapter<LikedHousesAdaptor.
     private List<House> mUploads;
     private DatabaseReference databaseReference;
     private DAOSavedHouses daoSavedHouses = new DAOSavedHouses();
-    boolean liked = false;
-    String liked_key;
+    boolean liked = true;
     public static final String EXTRA_TEXT = "com.example.agentie_imobiliara.key";
     public static final String EXTRA_ADDRESS = "com.example.agentie_impobiliara.address";
 
@@ -84,22 +84,34 @@ public class LikedHousesAdaptor extends RecyclerView.Adapter<LikedHousesAdaptor.
             }
         });
 
+        databaseReference = FirebaseDatabase.getInstance().getReference("SavedHouses");
         holder.save_house_b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                databaseReference = FirebaseDatabase.getInstance().getReference("SavedHouses");
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot dataSnapshot : snapshot.getChildren())
+                        for(DataSnapshot datasnapshot : snapshot.getChildren())
                         {
-                            SavedHouses savedHouses1 = dataSnapshot.getValue(SavedHouses.class);
-                            if(savedHouses1.getKey().equals(currentUpload.getKey()) && savedHouses1.getEmail().equals(authAction.getCurrentUser().getEmail()))
+                            SavedHouses savedHouses = datasnapshot.getValue(SavedHouses.class);
+                            if(savedHouses.getKey().equals(currentUpload.getKey()) && savedHouses.getEmail().equals(authAction.getCurrentUser().getEmail()))
                             {
-                                liked = true;
-                                liked_key = dataSnapshot.getKey();
+                                liked = false;
+                                daoSavedHouses.deleteHouse(datasnapshot.getKey()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Toast.makeText(mContext, "House was unsaved successfully!", Toast.LENGTH_SHORT).show();
+                                            ((Activity)mContext).recreate();
+                                        }
+                                        else{
+                                            Toast.makeText(mContext,""+ task.getException(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
                             }
                         }
+
                     }
 
                     @Override
@@ -108,18 +120,18 @@ public class LikedHousesAdaptor extends RecyclerView.Adapter<LikedHousesAdaptor.
                     }
                 });
 
-                if(liked == false)
-                {
-                    databaseReference = FirebaseDatabase.getInstance().getReference("SavedHouses");
-                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(liked)
+                        {
                             SavedHouses savedHouses = new SavedHouses(authAction.getCurrentUser().getEmail(), currentUpload.getKey());
                             daoSavedHouses.addHouse(savedHouses).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
                                         Toast.makeText(mContext, "House was saved successfully!", Toast.LENGTH_SHORT).show();
+                                        ((Activity)mContext).recreate();
                                     }
                                     else{
                                         Toast.makeText(mContext,""+ task.getException(), Toast.LENGTH_SHORT).show();
@@ -127,40 +139,14 @@ public class LikedHousesAdaptor extends RecyclerView.Adapter<LikedHousesAdaptor.
                                 }
                             });
                         }
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
-                }
-                else if(liked == true)
-                {
-                    databaseReference = FirebaseDatabase.getInstance().getReference("SavedHouses");
-                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            daoSavedHouses.deleteHouse(liked_key).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        Toast.makeText(mContext, "House was unsaved successfully!", Toast.LENGTH_SHORT).show();
-                                    }
-                                    else{
-                                        Toast.makeText(mContext,""+ task.getException(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
+                    }
+                });
             }
-
         });
 
         holder.book_visit_b.setOnClickListener(new View.OnClickListener() {
