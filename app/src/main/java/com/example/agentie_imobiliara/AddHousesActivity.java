@@ -42,7 +42,7 @@ public class AddHousesActivity extends AppCompatActivity {
     String fileName;
     private StorageReference imagesRef;
     private EditText address, size, rooms, baths, floors, special,price;
-    private FirebaseAuth authAction=FirebaseAuth.getInstance();
+    private FirebaseAuth authAction = FirebaseAuth.getInstance();
     private DAOHouses daoHouses = new DAOHouses();
 
 
