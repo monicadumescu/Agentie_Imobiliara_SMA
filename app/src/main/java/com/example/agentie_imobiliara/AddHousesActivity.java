@@ -40,6 +40,10 @@ public class AddHousesActivity extends AppCompatActivity {
     private Uri imageUri;
     ActivityResultLauncher<Intent> activityResultLauncher;
     String fileName;
+    private StorageReference imagesRef;
+    private EditText address, size, rooms, baths, floors, special,price;
+    private FirebaseAuth authAction=FirebaseAuth.getInstance();
+    private DAOHouses daoHouses = new DAOHouses();
 
 
     @Override
@@ -48,21 +52,17 @@ public class AddHousesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_houses);
         Button addHouse = (Button) findViewById(R.id.addHouseBH);
         Button addPictures = (Button) findViewById(R.id.addPicturesBH);
-        EditText address = (EditText) findViewById(R.id.addressH);
-        EditText size = (EditText) findViewById(R.id.sizeH);
-        EditText rooms = (EditText) findViewById(R.id.roomsH);
-        EditText baths = (EditText) findViewById(R.id.bathsH);
-        EditText floors = (EditText) findViewById(R.id.floorsH);
-        EditText special = (EditText) findViewById(R.id.specialH);
-        EditText price = (EditText) findViewById(R.id.priceH);
+        address = (EditText) findViewById(R.id.addressH);
+        size = (EditText) findViewById(R.id.sizeH);
+        rooms = (EditText) findViewById(R.id.roomsH);
+        baths = (EditText) findViewById(R.id.bathsH);
+        floors = (EditText) findViewById(R.id.floorsH);
+        special = (EditText) findViewById(R.id.specialH);
+        price = (EditText) findViewById(R.id.priceH);
         ImageView housePicture = (ImageView) findViewById(R.id.imageViewH);
 
-        StorageReference imagesRef;
-
-        FirebaseAuth authAction=FirebaseAuth.getInstance();
 
         FirebaseApp.initializeApp(getApplicationContext());
-        DAOHouses daoHouses = new DAOHouses();
 
         imagesRef = FirebaseStorage.getInstance().getReference();
 
@@ -99,40 +99,49 @@ public class AddHousesActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    StorageReference fileRefrence = imagesRef.child("image" + System.currentTimeMillis() + ".jpg");
-                    StorageReference pictureRef = imagesRef.child("images/" + "image" + System.currentTimeMillis());
-
-                    fileRefrence.getName().equals(pictureRef.getName());
-                    fileRefrence.getPath().equals(pictureRef.getPath());
-
-                    housePicture.setDrawingCacheEnabled(true);
-                    housePicture.buildDrawingCache();
-                    Bitmap bitmap = ((BitmapDrawable) housePicture.getDrawable()).getBitmap();
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100 , baos);
-
-                    byte [] data = baos.toByteArray();
-
-                    UploadTask uploadTask = fileRefrence.putBytes(data);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getApplicationContext(),"Upss...Something went wrong", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    House house = new House(address.getText().toString(), size.getText().toString(),rooms.getText().toString(), baths.getText().toString(),floors.getText().toString(), special.getText().toString(),authAction.getCurrentUser().getEmail().toString(), pictureRef.toString(), uploadTask.getSnapshot().getStorage().getDownloadUrl().toString(), price.getText().toString());
-                                    daoHouses.addHouse(house);
-                                    Toast.makeText(getApplicationContext(),"House was added successfully", Toast.LENGTH_SHORT).show();
-                                    finish();
-                                }
-                            });
+                    uploadFile();
                 }
             }
         });
+    }
+
+    private String getFileExtension(Uri uri)
+    {
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return  mime.getExtensionFromMimeType(cr.getType(uri));
+    }
+
+    private void uploadFile()
+    {
+        if(imageUri != null)
+        {
+            StorageReference storageReference = imagesRef.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+            storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Toast.makeText(getApplicationContext(), "Upload was successful!",Toast.LENGTH_SHORT).show();
+                            House house = new House(address.getText().toString(), size.getText().toString(),rooms.getText().toString(), baths.getText().toString(),floors.getText().toString(), special.getText().toString(),authAction.getCurrentUser().getEmail().toString(),  uri.toString(), imageUri.toString(), price.getText().toString());
+                            daoHouses.addHouse(house);
+                            Toast.makeText(getApplicationContext(),"House was added successfully", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+        else
+        {
+            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
