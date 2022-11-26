@@ -7,12 +7,14 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,32 +50,33 @@ public class EditHouseActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> activityResultLauncher;
     String fileName;
     House house;
+    String oldPicture, houes_key, oldPictureUri;
+    private StorageReference imagesRef;
+    private EditText address, size, rooms, baths, floors, special,price;
+    private FirebaseAuth authAction = FirebaseAuth.getInstance();
+    private DAOHouses daoHouses = new DAOHouses();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_house);
-
         Intent intent = getIntent();
         String key = intent.getStringExtra(YourHousesAdaptor.EXTRA_TEXT);
+        houes_key = key;
+
 
         Button addHouse = (Button) findViewById(R.id.addHouseBH);
         Button addPictures = (Button) findViewById(R.id.addPicturesBH);
-        EditText address = (EditText) findViewById(R.id.addressH);
-        EditText size = (EditText) findViewById(R.id.sizeH);
-        EditText rooms = (EditText) findViewById(R.id.roomsH);
-        EditText baths = (EditText) findViewById(R.id.bathsH);
-        EditText floors = (EditText) findViewById(R.id.floorsH);
-        EditText special = (EditText) findViewById(R.id.specialH);
-        EditText price = (EditText) findViewById(R.id.priceH);
+        address = (EditText) findViewById(R.id.addressH);
+        size = (EditText) findViewById(R.id.sizeH);
+        rooms = (EditText) findViewById(R.id.roomsH);
+        baths = (EditText) findViewById(R.id.bathsH);
+        floors = (EditText) findViewById(R.id.floorsH);
+        special = (EditText) findViewById(R.id.specialH);
+        price = (EditText) findViewById(R.id.priceH);
         ImageView housePicture = (ImageView) findViewById(R.id.imageViewH);
 
-        StorageReference imagesRef;
-
-        FirebaseAuth authAction = FirebaseAuth.getInstance();
-
         FirebaseApp.initializeApp(getApplicationContext());
-        DAOHouses daoHouses = new DAOHouses();
 
         imagesRef = FirebaseStorage.getInstance().getReference();
 
@@ -93,6 +96,8 @@ public class EditHouseActivity extends AppCompatActivity {
                         floors.setText(house.getFloors());
                         special.setText(house.getSpecial());
                         price.setText(house.getPrice());
+                        oldPicture = house.getPictureName();
+                        oldPictureUri = house.getImage();
                         Picasso.get().load(house.getPictureName()).fit().centerCrop().into(housePicture);
                     }
                 }
@@ -139,54 +144,58 @@ public class EditHouseActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    StorageReference fileRefrence = imagesRef.child("image" + System.currentTimeMillis() + ".jpg");
-                    StorageReference pictureRef = imagesRef.child("images/" + "image" + System.currentTimeMillis());
-
-                    fileRefrence.getName().equals(pictureRef.getName());
-                    fileRefrence.getPath().equals(pictureRef.getPath());
-
-                    housePicture.setDrawingCacheEnabled(true);
-                    housePicture.buildDrawingCache();
-                    Bitmap bitmap = ((BitmapDrawable) housePicture.getDrawable()).getBitmap();
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100 , baos);
-
-                    byte [] data = baos.toByteArray();
-
-                    UploadTask uploadTask = fileRefrence.putBytes(data);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getApplicationContext(),"Upss...Something went wrong", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    house.setAddress(address.getText().toString());
-                                    house.setSize(size.getText().toString());
-                                    house.setRooms(rooms.getText().toString());
-                                    house.setBaths(baths.getText().toString());
-                                    house.setFloors(floors.getText().toString());
-                                    house.setSpecial(special.getText().toString());
-                                    house.setPrice(price.getText().toString());
-                                    house.setPictureName(uploadTask.getSnapshot().getStorage().getDownloadUrl().toString());
-
-                                    daoHouses.editHouse(key, house).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            Toast.makeText(getApplicationContext(),"House was updated successfully", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-
-                                    Toast.makeText(getApplicationContext(),"House was updated successfully", Toast.LENGTH_SHORT).show();
-                                    finish();
-                                }
-                            });
+                    if(imageUri == null)
+                    {
+                        House house = new House(address.getText().toString(), size.getText().toString(),rooms.getText().toString(), baths.getText().toString(),floors.getText().toString(), special.getText().toString(),authAction.getCurrentUser().getEmail().toString(), oldPicture,oldPictureUri, price.getText().toString());
+                        daoHouses.editHouse(key, house);
+                        Toast.makeText(getApplicationContext(),"House was added successfully", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                    else {
+                        uploadFile();
+                    }
                 }
             }
         });
 
+    }
+
+    private String getFileExtension(Uri uri)
+    {
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return  mime.getExtensionFromMimeType(cr.getType(uri));
+    }
+
+    private void uploadFile()
+    {
+        if(imageUri != null)
+        {
+            StorageReference storageReference = imagesRef.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+            storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Toast.makeText(getApplicationContext(), "Upload was successful!",Toast.LENGTH_SHORT).show();
+                            House house = new House(address.getText().toString(), size.getText().toString(),rooms.getText().toString(), baths.getText().toString(),floors.getText().toString(), special.getText().toString(),authAction.getCurrentUser().getEmail().toString(),  uri.toString(), imageUri.toString(), price.getText().toString());
+                            daoHouses.editHouse(houes_key, house);
+                            Toast.makeText(getApplicationContext(),"House was added successfully", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else
+        {
+            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
+        }
     }
 }
