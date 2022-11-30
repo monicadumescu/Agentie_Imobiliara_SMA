@@ -55,6 +55,12 @@ public class HousesAdaptor extends RecyclerView.Adapter<HousesAdaptor.ImageViewH
         mUploads = uploads;
     }
 
+    public void setmUploads(List<House> mUploads) {
+        this.mUploads.clear();
+        this.mUploads.addAll(mUploads);
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
