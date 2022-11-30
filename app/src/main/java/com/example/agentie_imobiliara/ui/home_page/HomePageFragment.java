@@ -34,11 +34,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class HomePageFragment extends Fragment {
+public class HomePageFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private RecyclerView housesRecycleView;
     private HousesAdaptor housesAdaptor;
-    private FloatingActionButton filter;
+    private Button filter;
 
     private DatabaseReference databaseReference;
     private List<House> mHouses;
@@ -77,7 +77,7 @@ public class HomePageFragment extends Fragment {
         housesRecycleView = view.findViewById(R.id.recycler_view);
         housesRecycleView.setHasFixedSize(true);
         housesRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
-        filter = view.findViewById(R.id.filter_button);
+        filter = view.findViewById(R.id.filter_data);
 
         mHouses = new ArrayList<>();
 
@@ -133,14 +133,14 @@ public class HomePageFragment extends Fragment {
         size_check = addFilters.findViewById(R.id.min_size_check);
         price = addFilters.findViewById(R.id.price_t);
 
-        spinner_floors = (Spinner) addFilters.findViewById(R.id.rooms_no);
+        spinner_floors = (Spinner) addFilters.findViewById(R.id.floors_no);
         ArrayAdapter<CharSequence> adapter_floors = ArrayAdapter.createFromResource(getContext(),
                 R.array.floors_spinner, android.R.layout.simple_spinner_item);
 
         adapter_floors.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_floors.setAdapter(adapter_floors);
 
-        spinner_floors.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) getContext());
+        spinner_floors.setOnItemSelectedListener(this);
 
 
         spinner_baths = (Spinner) addFilters.findViewById(R.id.baths_no);
@@ -150,7 +150,7 @@ public class HomePageFragment extends Fragment {
         adapter_floors.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_baths.setAdapter(adapter_baths);
 
-        spinner_baths.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) getContext());
+        spinner_baths.setOnItemSelectedListener(this);
 
 
         spinner_rooms = (Spinner) addFilters.findViewById(R.id.rooms_no);
@@ -160,13 +160,13 @@ public class HomePageFragment extends Fragment {
         adapter_floors.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_rooms.setAdapter(adapter_rooms);
 
-        spinner_rooms.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) getContext());
+        spinner_rooms.setOnItemSelectedListener(this);
 
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 List<House> filteredHouses;
-                filteredHouses  = mHouses;
+                filteredHouses = mHouses;
 
                 if (is_location_check) {
                     filteredHouses = filteredHouses.stream().filter(house -> house.getAddress().contains(location.getText())).collect(Collectors.toList());
@@ -222,4 +222,25 @@ public class HomePageFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        switch (view.getId()) {
+            case R.id.floors_no:
+                floors = spinner_floors.toString();
+                break;
+            case R.id.rooms_no:
+                rooms = spinner_rooms.toString();
+                break;
+            case R.id.baths_no:
+                baths = spinner_baths.toString();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }
