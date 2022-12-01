@@ -1,9 +1,20 @@
 package com.example.agentie_imobiliara;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.agentie_imobiliara.ui.home.HomeFragment;
@@ -12,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -29,6 +41,7 @@ public class MainPage extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainPageBinding binding;
     NavigationView navigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,4 +84,5 @@ public class MainPage extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
 }
