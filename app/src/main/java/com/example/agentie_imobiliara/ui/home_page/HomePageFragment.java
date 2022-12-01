@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -34,7 +35,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class HomePageFragment extends Fragment implements AdapterView.OnItemSelectedListener{
+public class HomePageFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private RecyclerView housesRecycleView;
     private HousesAdaptor housesAdaptor;
@@ -50,7 +51,7 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemSele
     private EditText location, special, price, size;
     private Button apply;
     private CheckBox location_check, rooms_check, size_check, floors_check, baths_check, special_check, price_check;
-    private boolean is_location_check = false, is_rooms_check = true, is_size_check = false, is_floors_check = true, is_baths_check = false, is_special_check = false, is_price_check = false;
+    private boolean is_location_check = false, is_rooms_check = false, is_size_check = false, is_floors_check = false, is_baths_check = false, is_special_check = false, is_price_check = false;
 
     public HomePageFragment() {
         // Required empty public constructor
@@ -136,6 +137,14 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemSele
         size_check = addFilters.findViewById(R.id.min_size_check);
         price = addFilters.findViewById(R.id.price_t);
 
+        is_location_check = false;
+        is_rooms_check = false;
+        is_size_check = false;
+        is_floors_check = false;
+        is_baths_check = false;
+        is_special_check = false;
+        is_price_check = false;
+
         spinner_floors = (Spinner) addFilters.findViewById(R.id.floors_no);
         ArrayAdapter<CharSequence> adapter_floors = ArrayAdapter.createFromResource(addFilters.getContext(),
                 R.array.floors_spinner, android.R.layout.simple_spinner_item);
@@ -196,34 +205,75 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemSele
             }
         });
 
+        location_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                is_location_check = !is_location_check;
+            }
+        });
+
+        size_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                is_size_check = !is_size_check;
+            }
+        });
+
+        rooms_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                is_rooms_check = !is_rooms_check;
+            }
+        });
+
+        floors_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                is_floors_check = !is_floors_check;
+            }
+        });
+
+        special_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                is_special_check = !is_special_check;
+            }
+        });
+
+        price_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                is_price_check = !is_price_check;
+            }
+        });
+
 
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 List<House> filteredHouses = new ArrayList<>();
-//                filteredHouses.addAll(mHouses);
+                filteredHouses.addAll(allHouses);
 
-//                if (is_location_check) {
-//                    filteredHouses = filteredHouses.stream().filter(house -> house.getAddress().contains(location.getText())).collect(Collectors.toList());
-//                }
-//                if (is_size_check) {
-//                    filteredHouses = filteredHouses.stream().filter(house -> Integer.parseInt(house.getSize()) >= (Integer.parseInt(size.getText().toString()) - 50) && Integer.parseInt(house.getSize()) <= (Integer.parseInt(size.getText().toString()) + 50)).collect(Collectors.toList());
-//                }
-                //if (is_rooms_check) {
-                filteredHouses = allHouses.stream().filter(house -> house.getFloors().equals(floors)).collect(Collectors.toList());
-                //}
-//                if (is_floors_check) {
-//                    filteredHouses = filteredHouses.stream().filter(house -> house.getFloors().equals(floors)).collect(Collectors.toList());
-//                }
-//                if (is_special_check) {
-//                    filteredHouses = filteredHouses.stream().filter(house -> house.getSpecial().contains(special.getText())).collect(Collectors.toList());
-//                }
-//                if (is_price_check) {
-//                    filteredHouses = filteredHouses.stream().filter(house -> Integer.parseInt(house.getPrice()) >= (Integer.parseInt(price.getText().toString()) - 500) && Integer.parseInt(house.getPrice()) <= (Integer.parseInt(price.getText().toString()) + 500)).collect(Collectors.toList());
-//                }
-                if(filteredHouses.isEmpty())
-                {
-                    Toast.makeText(getContext(), "Sorry... There are no houses like this!",Toast.LENGTH_LONG).show();
+                if (is_location_check) {
+                    filteredHouses = filteredHouses.stream().filter(house -> house.getAddress().contains(location.getText())).collect(Collectors.toList());
+                }
+                if (is_size_check) {
+                    filteredHouses = filteredHouses.stream().filter(house -> Integer.parseInt(house.getSize()) >= (Integer.parseInt(size.getText().toString()) - 50) && Integer.parseInt(house.getSize()) <= (Integer.parseInt(size.getText().toString()) + 50)).collect(Collectors.toList());
+                }
+                if (is_rooms_check) {
+                    filteredHouses = filteredHouses.stream().filter(house -> house.getRooms().equals(rooms)).collect(Collectors.toList());
+                }
+                if (is_floors_check) {
+                    filteredHouses = filteredHouses.stream().filter(house -> house.getFloors().equals(floors)).collect(Collectors.toList());
+                }
+                if (is_special_check) {
+                    filteredHouses = filteredHouses.stream().filter(house -> house.getSpecial().contains(special.getText())).collect(Collectors.toList());
+                }
+                if (is_price_check) {
+                    filteredHouses = filteredHouses.stream().filter(house -> Integer.parseInt(house.getPrice()) >= (Integer.parseInt(price.getText().toString()) - 500) && Integer.parseInt(house.getPrice()) <= (Integer.parseInt(price.getText().toString()) + 500)).collect(Collectors.toList());
+                }
+                if (filteredHouses.isEmpty()) {
+                    Toast.makeText(getContext(), "Sorry... There are no houses like this!", Toast.LENGTH_LONG).show();
                 }
                 housesAdaptor.setmUploads(filteredHouses);
                 housesAdaptor.notifyDataSetChanged();
