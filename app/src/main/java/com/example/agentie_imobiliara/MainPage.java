@@ -85,4 +85,10 @@ public class MainPage extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
+    @Override
+    public void onBackPressed()
+    {
+
+    }
+
 }

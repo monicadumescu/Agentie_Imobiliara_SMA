@@ -1,8 +1,15 @@
 package com.example.agentie_imobiliara.adaptors;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +19,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.agentie_imobiliara.DAO.DAOBooking;
 import com.example.agentie_imobiliara.R;
 import com.example.agentie_imobiliara.model.Booking;
+import com.example.agentie_imobiliara.ui.bookings.BookingsFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -65,6 +74,7 @@ public class BookingsAdaptor extends RecyclerView.Adapter<BookingsAdaptor.ImageV
                     currentUpload.setAccept_booking(true);
                     daoBooking.editBooking(currentUpload.getObject_key(), currentUpload);
                     Toast.makeText(mContext, "The booking was approved successfully!", Toast.LENGTH_SHORT).show();
+                    addNotification();
                     ((Activity) mContext).recreate();
                 }
             }
@@ -144,6 +154,31 @@ public class BookingsAdaptor extends RecyclerView.Adapter<BookingsAdaptor.ImageV
 
         });
 
+    }
+
+    private void addNotification() {
+        NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        String NOTIFICATION_CHANNEL_ID = "bookings_notifications";
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,"My notifications", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setDescription("Sample channel description");
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.BLUE);
+            notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+            notificationChannel.enableVibration(true);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, NOTIFICATION_CHANNEL_ID);
+        builder.setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setTicker("Booking")
+                .setContentTitle("Booking")
+                .setContentText("Your booking was accepted")
+                .setContentInfo("Information");
+        notificationManager.notify(1, builder.build());
     }
 
     @Override
