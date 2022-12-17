@@ -10,8 +10,8 @@ This application aims to help people which are looking for a house or want to fi
 The user needs to first register into the application providing an email and a password.
 The password can be changed latter in the app.
 ## Use-cases
-After logging into the application the user will see a list with all the houses from the database.\n
-The user can filter the houses, save the houses to see later, search online the houses or book a visit for a house. In order to book a visit they need to provide a date and an hour. The booking will need to be accepted by the house owner.\n
+After logging into the application the user will see a list with all the houses from the database.<br />
+The user can filter the houses, save the houses to see later, search online the houses or book a visit for a house. In order to book a visit they need to provide a date and an hour. The booking will need to be accepted by the house owner.
 An user can also add houses for sale providin its properties such as address, size and a picture of the house. The user can edit or delete his houses later.
 As a house owner, the user can accept or decline a booking for his house.
 The app also sends campaign notifications every day.
