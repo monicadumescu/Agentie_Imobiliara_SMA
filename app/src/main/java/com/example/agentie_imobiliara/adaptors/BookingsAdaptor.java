@@ -1,5 +1,8 @@
 package com.example.agentie_imobiliara.adaptors;
 
+import static android.content.ContentValues.TAG;
+import static android.provider.Settings.System.getString;
+
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -10,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +30,10 @@ import com.example.agentie_imobiliara.DAO.DAOBooking;
 import com.example.agentie_imobiliara.R;
 import com.example.agentie_imobiliara.model.Booking;
 import com.example.agentie_imobiliara.ui.bookings.BookingsFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 
@@ -51,6 +58,8 @@ public class BookingsAdaptor extends RecyclerView.Adapter<BookingsAdaptor.ImageV
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
+
+
         Booking currentUpload = mUploads.get(position);
         holder.booking_address.setText("Booking address: " + currentUpload.getAddress());
         holder.visitor.setText("Visitor: " + currentUpload.getUser());
